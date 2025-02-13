@@ -1,0 +1,25 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: silo
+contracts:
+- name: Silo
+  handler: src/EventHandlers.ts
+  events:
+  - event: Approval(address indexed owner, address indexed spender, uint256 value)
+  - event: DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate)
+  - event: DelegateVotesChanged(address indexed delegate, uint256 previousBalance, uint256 newBalance)
+  - event: OwnershipTransferred(address indexed previousOwner, address indexed newOwner)
+  - event: Transfer(address indexed from, address indexed to, uint256 value)
+networks:
+- id: 1
+  start_block: 0
+  contracts:
+  - name: Silo
+    address:
+    - 0x6f80310CA7F2C654691D1383149Fa1A57d8AB1f8
+- id: 42161
+  start_block: 0
+  contracts:
+  - name: Silo
+    address:
+    - 0x0341C0C0ec423328621788d4854119B97f44E391
+rollback_on_reorg: false
