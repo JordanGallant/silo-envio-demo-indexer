@@ -22,4 +22,5 @@ networks:
   - name: Silo
     address:
     - 0x0341C0C0ec423328621788d4854119B97f44E391
-rollback_on_reorg: false
+rollback_on_reorg: false #reorg turn on for prod.
+raw_events: true
