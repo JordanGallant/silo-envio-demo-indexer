@@ -2,18 +2,14 @@ import {
   Silo,
   SiloFactory,
   SiloFactory_NewSilo,
-  Silo_AccruedInterest,
   Silo_Approval,
   Silo_Borrow,
   Silo_CollateralTypeChanged,
   Silo_Deposit,
   Silo_DepositProtected,
-  Silo_EIP712DomainChanged,
   Silo_FlashLoan,
   Silo_HooksUpdated,
   Silo_Initialized,
-  Silo_NotificationSent,
-  Silo_Repay,
   Silo_Transfer,
   Silo_Withdraw,
   Silo_WithdrawProtected,
@@ -23,11 +19,29 @@ import {
   Token_OwnershipTransferred,
   Token_Transfer,
   Token_DelegateChanged,
-  Token
+  Token,
+  SonicSiloFactory,
+  SonicSilo,
+  SonicSilo_Deposit,
+  SonicSilo_Withdraw,
+  SonicSilo_Initialized,
+  SonicSilo_HooksUpdated,
+  SonicSilo_Transfer,
+  
 
 } from "generated";
 
 SiloFactory.NewSilo.contractRegister(
+  async ({ event, context }) => {
+    console.log("Silo Added", event.params.silo0);  
+    console.log("Silo Added", event.params.silo1);
+    context.addSilo(event.params.silo0);
+    context.addSilo(event.params.silo1);
+  },
+  { preRegisterDynamicContracts: true }
+);
+
+SonicSiloFactory.NewSilo.contractRegister(
   async ({ event, context }) => {
     console.log("Silo Added", event.params.silo0);  
     console.log("Silo Added", event.params.silo1);
@@ -49,14 +63,6 @@ SiloFactory.NewSilo.handler(async ({ event, context }) => {
   };
 
   context.SiloFactory_NewSilo.set(entity);
-});
-Silo.AccruedInterest.handler(async ({ event, context }) => {
-  const entity: Silo_AccruedInterest = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    hooksBefore: event.params.hooksBefore,
-  };
-
-  context.Silo_AccruedInterest.set(entity);
 });
 
 Silo.Approval.handler(async ({ event, context }) => {
@@ -116,13 +122,6 @@ Silo.DepositProtected.handler(async ({ event, context }) => {
   context.Silo_DepositProtected.set(entity);
 });
 
-Silo.EIP712DomainChanged.handler(async ({ event, context }) => {
-  const entity: Silo_EIP712DomainChanged = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-  };
-
-  context.Silo_EIP712DomainChanged.set(entity);
-});
 
 Silo.FlashLoan.handler(async ({ event, context }) => {
   const entity: Silo_FlashLoan = {
@@ -152,27 +151,6 @@ Silo.Initialized.handler(async ({ event, context }) => {
   context.Silo_Initialized.set(entity);
 });
 
-Silo.NotificationSent.handler(async ({ event, context }) => {
-  const entity: Silo_NotificationSent = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    notificationReceiver: event.params.notificationReceiver,
-    success: event.params.success,
-  };
-
-  context.Silo_NotificationSent.set(entity);
-});
-
-Silo.Repay.handler(async ({ event, context }) => {
-  const entity: Silo_Repay = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    sender: event.params.sender,
-    owner: event.params.owner,
-    assets: event.params.assets,
-    shares: event.params.shares,
-  };
-
-  context.Silo_Repay.set(entity);
-});
 
 Silo.Transfer.handler(async ({ event, context }) => {
   const entity: Silo_Transfer = {
@@ -273,4 +251,58 @@ Token.Transfer.handler(async ({ event, context }) => {
   };
 
   context.Token_Transfer.set(entity);
+});
+
+// Event Handlers for Silos on Sonic
+SonicSilo.Transfer.handler(async ({ event, context }) => {
+  const entity: SonicSilo_Transfer = {
+    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+    from: event.params.from,
+    to: event.params.to,
+    value: event.params.value,
+  };
+
+  context.SonicSilo_Transfer.set(entity);
+});
+
+SonicSilo.Withdraw.handler(async ({ event, context }) => {
+  const entity: SonicSilo_Withdraw = {
+    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+    sender: event.params.sender,
+    receiver: event.params.receiver,
+    owner: event.params.owner,
+    assets: event.params.assets,
+    shares: event.params.shares,
+  };
+
+  context.SonicSilo_Withdraw.set(entity);
+});
+
+SonicSilo.Deposit.handler(async ({ event, context }) => {
+  const entity: SonicSilo_Deposit = {
+    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+    sender: event.params.sender,
+    owner: event.params.owner,
+    assets: event.params.assets,
+    shares: event.params.shares,
+  };
+
+  context.SonicSilo_Deposit.set(entity);
+});
+SonicSilo.HooksUpdated.handler(async ({ event, context }) => {
+  const entity: SonicSilo_HooksUpdated = {
+    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+    hooksBefore: event.params.hooksBefore,
+    hooksAfter: event.params.hooksAfter,
+  };
+
+  context.SonicSilo_HooksUpdated.set(entity);
+});
+SonicSilo.Initialized.handler(async ({ event, context }) => {
+  const entity: SonicSilo_Initialized = {
+    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+    version: event.params.version,
+  };
+
+  context.SonicSilo_Initialized.set(entity);
 });

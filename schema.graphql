@@ -8,12 +8,29 @@ type SiloFactory_NewSilo {
   siloConfig: String!
 }
 
+type SonicSiloFactory_NewSilo {
+  id: ID!
+  implementation: String!
+  token0: String!
+  token1: String!
+  silo0: String!
+  silo1: String!
+  siloConfig: String!
+}
+
 type Silo_AccruedInterest {
   id: ID!
   hooksBefore: BigInt!
 }
 
 type Silo_Approval {
+  id: ID!
+  owner: String!
+  spender: String!
+  value: BigInt!
+}
+
+type Sonic_Silo_Approval {
   id: ID!
   owner: String!
   spender: String!
@@ -29,12 +46,22 @@ type Silo_Borrow {
   shares: BigInt!
 }
 
+
+
 type Silo_CollateralTypeChanged {
   id: ID!
   borrower: String!
 }
 
 type Silo_Deposit {
+  id: ID!
+  sender: String!
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+}
+
+type SonicSilo_Deposit {
   id: ID!
   sender: String!
   owner: String!
@@ -64,8 +91,17 @@ type Silo_HooksUpdated {
   hooksBefore: BigInt!
   hooksAfter: BigInt!
 }
-
+type SonicSilo_HooksUpdated {
+  id: ID!
+  hooksBefore: BigInt!
+  hooksAfter: BigInt!
+}
 type Silo_Initialized {
+  id: ID!
+  version: BigInt!
+}
+
+type SonicSilo_Initialized {
   id: ID!
   version: BigInt!
 }
@@ -91,7 +127,21 @@ type Silo_Transfer {
   value: BigInt!
 }
 
+type SonicSilo_Transfer {
+  id: ID!
+  from: String!
+  to: String!
+  value: BigInt!
+}
 type Silo_Withdraw {
+  id: ID!
+  sender: String!
+  receiver: String!
+  owner: String!
+  assets: BigInt!
+  shares: BigInt!
+}
+type SonicSilo_Withdraw {
   id: ID!
   sender: String!
   receiver: String!
