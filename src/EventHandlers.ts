@@ -45,8 +45,8 @@ SonicSiloFactory.NewSilo.contractRegister(
   async ({ event, context }) => {
     console.log("Silo Added", event.params.silo0);  
     console.log("Silo Added", event.params.silo1);
-    context.addSilo(event.params.silo0);
-    context.addSilo(event.params.silo1);
+    context.addSonicSilo(event.params.silo0);
+    context.addSonicSilo(event.params.silo1);
   },
   { preRegisterDynamicContracts: true }
 );
